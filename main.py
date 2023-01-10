@@ -35,8 +35,8 @@ def load_model(model_params):
                     gdown.download(url_pth, output, quiet=False)
 
                     msg.success("Download was successful ✅")
-            except:
-                msg.error("Error downloading model files...😥")
+            except Exception as e:
+                msg.error(e)
     # 1- Select pretrained model parameters: bertweet or x_distil_bert_l6h256
     deep_learning_modules.bertweet_model_params
     # 2- BiLSTM on top of bert or just mean (BiLSTMTransferLearningClassifier or TransferLearningClassifier)
