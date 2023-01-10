@@ -6,6 +6,9 @@ import torch
 from torch.utils.data import DataLoader
 import tokenizers
 import warnings
+import os
+import requests
+import time
 
 warnings.filterwarnings("ignore")
 
@@ -18,6 +21,24 @@ warnings.filterwarnings("ignore")
     suppress_st_warning=True,
 )
 def load_model(model_params):
+    model_path = "models/model_bertweet_large-epoch_1"
+    checkFiles = [model_path]
+    for path in checkFiles:
+        if os.path.exists(path) == False:
+            print("I miss :", path)
+            msg = st.warning("🚩 Models need to be downloaded... ")
+            try:
+                with st.spinner("Initiating..."):
+                    time.sleep(3)
+                    url_pth = "https://drive.google.com/file/d/1-9Q9HPeTBNBi8c3DWDAQKWTEbh22R0vQ/view?usp=sharing"
+
+                    r_pth = requests.get(url_pth, allow_redirects=True)
+
+                    open(model_path, "wb").write(r_pth.content)
+                    del r_pth
+                    msg.success("Download was successful ✅")
+            except:
+                msg.error("Error downloading model files...😥")
     # 1- Select pretrained model parameters: bertweet or x_distil_bert_l6h256
     deep_learning_modules.bertweet_model_params
     # 2- BiLSTM on top of bert or just mean (BiLSTMTransferLearningClassifier or TransferLearningClassifier)
@@ -25,7 +46,6 @@ def load_model(model_params):
     # 3- freeze bert model or not (freeze_pretrained true or false)
     freeze_pretrained = False
     # 4- trained model path
-    model_path = "models/model_bertweet_large-epoch_1"
     model = dl_model(model_params, freeze_pretrained)
     device = torch.device("cpu")
     model.load_state_dict(torch.load(model_path, map_location=device))
