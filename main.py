@@ -7,8 +7,8 @@ from torch.utils.data import DataLoader
 import tokenizers
 import warnings
 import os
-import requests
 import time
+import gdown
 
 warnings.filterwarnings("ignore")
 
@@ -30,12 +30,10 @@ def load_model(model_params):
             try:
                 with st.spinner("Initiating..."):
                     time.sleep(3)
-                    url_pth = "https://drive.google.com/file/d/1-9Q9HPeTBNBi8c3DWDAQKWTEbh22R0vQ/view?usp=sharing"
+                    url_pth = "https://drive.google.com/uc?id=1-9Q9HPeTBNBi8c3DWDAQKWTEbh22R0vQ"
+                    output = model_path
+                    gdown.download(url_pth, output, quiet=False)
 
-                    r_pth = requests.get(url_pth, allow_redirects=True)
-
-                    open(model_path, "wb").write(r_pth.content)
-                    del r_pth
                     msg.success("Download was successful ✅")
             except:
                 msg.error("Error downloading model files...😥")
