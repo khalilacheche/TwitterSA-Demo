@@ -1,3 +1,0 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-/models/model_bertweet_large-epoch_1 filter=lfs diff=lfs merge=lfs -text
